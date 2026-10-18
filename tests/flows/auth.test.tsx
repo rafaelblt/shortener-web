@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { renderApp, renderSignedIn } from "@tests/support/render-app";
@@ -147,5 +147,24 @@ describe("signing out", () => {
     await renderSignedIn("/sign-out");
 
     expect(await screen.findByRole("heading", { name: "Links" })).toBeInTheDocument();
+  });
+
+  it("leaves the forms of the page alone while it signs out", async () => {
+    const services = createTestServices();
+    const signOut = services.auth.signOut.bind(services.auth);
+    const { promise: answered, resolve: answer } = Promise.withResolvers<undefined>();
+    services.auth.signOut = async () => {
+      await answered;
+      await signOut();
+    };
+    const { user } = await renderSignedIn("/account", { services });
+    await screen.findByRole("heading", { name: "Account" });
+
+    const signOutPanel = screen.getByRole("region", { name: "Sign out" });
+    await user.click(within(signOutPanel).getByRole("button", { name: "Sign out" }));
+
+    expect(await screen.findByRole("button", { name: "Change password" })).toBeEnabled();
+    answer(undefined);
+    expect(await screen.findByRole("heading", { name: "Sign in" })).toBeInTheDocument();
   });
 });
