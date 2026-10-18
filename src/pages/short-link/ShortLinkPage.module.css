@@ -1,0 +1,52 @@
+.page {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: var(--space-4);
+  max-width: 40rem;
+  min-height: 80vh;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-5);
+}
+
+.eyebrow {
+  color: var(--color-ink-muted);
+}
+
+.link {
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+
+.target {
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.title {
+  font-size: var(--text-xl);
+}
+
+.text,
+.note {
+  color: var(--color-ink-muted);
+}
+
+.note {
+  font-size: var(--text-sm);
+}
+
+.home {
+  margin-top: var(--space-6);
+  color: var(--color-ink-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  text-decoration: none;
+}
+
+.slash {
+  color: var(--color-accent);
+}

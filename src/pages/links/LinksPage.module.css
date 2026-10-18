@@ -1,0 +1,14 @@
+.page {
+  display: grid;
+  gap: var(--space-5);
+  justify-items: stretch;
+}
+
+.page > a:last-child {
+  justify-self: center;
+}
+
+.createdLink {
+  font-family: var(--font-mono);
+  font-weight: 500;
+}

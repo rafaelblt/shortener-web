@@ -1,0 +1,16 @@
+.banner {
+  padding: var(--space-2) var(--space-5);
+  border-bottom: 1px dashed var(--color-rule-strong);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+.banner strong {
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+.banner code {
+  color: var(--color-ink);
+}

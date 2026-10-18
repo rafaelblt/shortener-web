@@ -1,0 +1,162 @@
+.columns,
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 6.5rem 8.5rem 8.5rem;
+  gap: var(--space-4);
+  align-items: center;
+  padding-inline: var(--space-2);
+}
+
+.columns {
+  padding-block: var(--space-2);
+  border-bottom: 1px solid var(--color-rule-strong);
+  color: var(--color-ink-faint);
+  font-size: var(--text-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  position: relative;
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--color-rule);
+  transition: background-color 120ms ease;
+}
+
+.row:hover {
+  background: var(--color-wash);
+}
+
+.highlighted {
+  background: color-mix(in srgb, var(--color-positive) 10%, transparent);
+}
+
+.link {
+  display: grid;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.slugLine {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.slug {
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.slug::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.slug:hover {
+  text-decoration: underline;
+}
+
+.slash {
+  color: var(--color-accent);
+}
+
+.copy {
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+}
+
+.row:hover .copy,
+.copy:focus-visible {
+  opacity: 1;
+}
+
+.target {
+  overflow: hidden;
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.numeric {
+  text-align: right;
+}
+
+.count {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.countLabel,
+.created {
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+}
+
+/* The column header names it on wide screens. */
+.countLabel {
+  display: none;
+}
+
+.empty {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-6) var(--space-5);
+  border: 1px dashed var(--color-rule-strong);
+  border-radius: var(--radius);
+  color: var(--color-ink-muted);
+  text-align: center;
+}
+
+.emptyTitle {
+  color: var(--color-ink);
+  font-weight: 500;
+}
+
+@media (hover: none) {
+  .copy {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 40rem) {
+  .columns {
+    display: none;
+  }
+
+  .row {
+    grid-template-columns: auto auto minmax(0, 1fr);
+    gap: var(--space-1) var(--space-4);
+  }
+
+  .link {
+    grid-column: 1 / -1;
+  }
+
+  .numeric {
+    text-align: left;
+  }
+
+  .countLabel {
+    display: inline;
+  }
+
+  .created {
+    text-align: right;
+  }
+}

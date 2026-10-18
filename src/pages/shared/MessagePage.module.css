@@ -1,0 +1,22 @@
+/* The layout of the pages that only show a message, such as the 404 and the error page. */
+
+.page {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: var(--space-3);
+  max-width: 40rem;
+  min-height: 70vh;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-5);
+}
+
+.code {
+  color: var(--color-accent);
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+
+.title {
+  font-size: var(--text-xl);
+}

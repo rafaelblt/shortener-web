@@ -1,0 +1,29 @@
+/* What the sign-in and register pages share. */
+
+.page {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.heading {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.title {
+  font-size: var(--text-xl);
+}
+
+.lead {
+  color: var(--color-ink-muted);
+}
+
+.submit {
+  width: 100%;
+}
+
+.switch {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-rule);
+  color: var(--color-ink-muted);
+}

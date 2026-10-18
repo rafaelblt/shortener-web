@@ -1,0 +1,23 @@
+.layout {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-7);
+  padding: var(--space-8) var(--space-5) var(--space-7);
+}
+
+.brand {
+  font-size: var(--text-md);
+  text-decoration: none;
+}
+
+.column {
+  width: 100%;
+  max-width: var(--narrow-width);
+}
+
+@media (max-width: 36rem) {
+  .layout {
+    gap: var(--space-6);
+    padding-top: var(--space-6);
+  }
+}

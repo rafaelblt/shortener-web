@@ -1,0 +1,38 @@
+.form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "target target"
+    "slug submit";
+  gap: var(--space-4) var(--space-3);
+  align-items: start;
+}
+
+.targetUrl {
+  grid-area: target;
+}
+
+.slug {
+  grid-area: slug;
+}
+
+.submit {
+  grid-area: submit;
+  /* Lines the button up with the input, under the label of the slug. */
+  margin-top: calc(var(--text-sm) * var(--leading-normal) + var(--space-1));
+  min-width: 7rem;
+}
+
+@media (max-width: 36rem) {
+  .form {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "target"
+      "slug"
+      "submit";
+  }
+
+  .submit {
+    margin-top: 0;
+  }
+}
