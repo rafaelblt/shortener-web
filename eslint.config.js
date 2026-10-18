@@ -17,6 +17,11 @@ export default defineConfig(
     },
     rules: {
       "@typescript-eslint/restrict-template-expressions": ["error", { allowNumber: true }],
+      // React Router redirects by throwing a Response, such as `throw redirect("/")`.
+      "@typescript-eslint/only-throw-error": [
+        "error",
+        { allow: [{ from: "lib", name: "Response" }] },
+      ],
     },
   },
   {
@@ -24,9 +29,9 @@ export default defineConfig(
     extends: [reactHooks.configs.flat["recommended-latest"], reactRefresh.configs.vite],
   },
   {
-    // Route modules export their loader and action beside the page, which is how React Router
-    // defines a route; Fast Refresh then reloads the page instead of patching it.
-    files: ["src/pages/**/*.tsx"],
+    // Route modules export their loader and action beside the page or the layout, which is how
+    // React Router defines a route; Fast Refresh then reloads the page instead of patching it.
+    files: ["src/pages/**/*.tsx", "src/app/*Layout.tsx"],
     rules: { "react-refresh/only-export-components": "off" },
   },
   {

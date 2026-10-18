@@ -55,8 +55,9 @@ module.exports = {
     },
     {
       name: "src-doesnt-import-dev-dependencies",
+      comment: "Type declarations may: they aren't part of the build.",
       severity: "error",
-      from: { path: "^src/", pathNot: TEST_FILE },
+      from: { path: "^src/", pathNot: [TEST_FILE, "\\.d\\.ts$"] },
       to: { dependencyTypes: ["npm-dev"] },
     },
     {
