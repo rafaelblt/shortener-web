@@ -1,0 +1,27 @@
+.panel {
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+.header {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-5) 0;
+}
+
+.title {
+  font-size: var(--text-md);
+}
+
+.description {
+  color: var(--color-ink-muted);
+}
+
+.body {
+  padding: var(--space-4) var(--space-5) var(--space-5);
+}
+
+.danger {
+  border-color: color-mix(in srgb, var(--color-danger) 45%, var(--color-rule));
+}

@@ -6,6 +6,8 @@ export default defineConfig({
   resolve: { tsconfigPaths: true },
   test: {
     environment: "jsdom",
+    // Dates are formatted in the local time zone, so the tests fix it.
+    env: { TZ: "UTC" },
     setupFiles: ["tests/setup.ts"],
     include: ["src/**/*.test.{ts,tsx}", "tests/flows/**/*.test.tsx", "tests/docs.test.ts"],
     restoreMocks: true,

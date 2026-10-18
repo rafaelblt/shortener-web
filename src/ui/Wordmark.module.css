@@ -1,0 +1,9 @@
+.wordmark {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.slash {
+  color: var(--color-accent);
+}
