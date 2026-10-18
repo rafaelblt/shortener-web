@@ -15,6 +15,8 @@ export default defineConfig({
       provider: "v8",
       include: ["src/**"],
       exclude: ["src/**/*.test.{ts,tsx}", "src/app/main.tsx"],
+      // Raised as coverage grows, never lowered. See CONTRIBUTING.md#checks
+      thresholds: { lines: 100, functions: 100, statements: 99, branches: 90 },
     },
   },
 });
