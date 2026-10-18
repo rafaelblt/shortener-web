@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
 
-// The demo account the simulation adds. See src/simulation/demo-data.ts
+// The demo account the simulation adds. See docs/app/simulation.md#the-demo-account
 const DEMO = { username: "demo", password: "demo-password" };
 
 async function signIn(page: Page, { username, password }: typeof DEMO) {
