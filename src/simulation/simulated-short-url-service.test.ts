@@ -70,6 +70,15 @@ describe("create", () => {
     expect(shortUrl.slug).toBe("free01");
   });
 
+  it("gives up when every generated slug is taken", async () => {
+    const { services } = await aliceServices({ newSlug: () => "taken1" });
+    unwrap(await services.shortUrls.create({ targetUrl: TARGET_URL, slug: "taken1" }));
+
+    await expect(services.shortUrls.create({ targetUrl: TARGET_URL })).rejects.toThrow(
+      "No unused slug",
+    );
+  });
+
   it("reports every value that breaks a rule", async () => {
     const { services } = await aliceServices();
 

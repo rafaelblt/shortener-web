@@ -21,6 +21,7 @@ import { wait } from "./latency";
 import type { SimulationOptions, SimulationStore } from "./store";
 
 const NOT_FOUND: NotFound = { code: "not_found" };
+const SLUG_GENERATION_ATTEMPTS = 10;
 
 export class SimulatedShortUrlService implements ShortUrlService {
   private readonly store: SimulationStore;
@@ -145,10 +146,13 @@ export class SimulatedShortUrlService implements ShortUrlService {
     return shortUrl?.ownerId === this.requireSignedInUserId() ? shortUrl : undefined;
   }
 
+  /** Gives up after as many attempts as the shortener makes, which answers an error then. */
   private unusedSlug(): string {
-    let slug = this.options.newSlug();
-    while (this.store.shortUrlBySlug(slug)) slug = this.options.newSlug();
-    return slug;
+    for (let attempt = 0; attempt < SLUG_GENERATION_ATTEMPTS; attempt++) {
+      const slug = this.options.newSlug();
+      if (!this.store.shortUrlBySlug(slug)) return slug;
+    }
+    throw new Error(`No unused slug in ${SLUG_GENERATION_ATTEMPTS} attempts`);
   }
 }
 

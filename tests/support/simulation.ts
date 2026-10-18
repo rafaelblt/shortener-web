@@ -5,17 +5,19 @@ import type { SimulationSettings } from "@/simulation/simulated-services";
 import { createSimulatedServices } from "@/simulation/simulated-services";
 
 export const NOW = new Date("2026-10-18T12:00:00Z");
-export const GENERATED_SLUG = "Gen123";
+/** The first slug the test services generate; the next ones are gen002, gen003… */
+export const GENERATED_SLUG = "gen001";
 export const ALICE: Credentials = { username: "alice", password: "correct-horse" };
 export const BOB: Credentials = { username: "bob", password: "battery-staple" };
 
-/** Simulated services with a fixed clock, numbered IDs and a known generated slug. */
+/** Simulated services with a fixed clock, and numbered IDs and generated slugs. */
 export function createTestServices(settings: SimulationSettings = {}): Services {
   let lastId = 0;
+  let lastSlug = 0;
   return createSimulatedServices({
     now: () => NOW,
     newId: () => `id-${String(++lastId)}`,
-    newSlug: () => GENERATED_SLUG,
+    newSlug: () => `gen${String(++lastSlug).padStart(3, "0")}`,
     ...settings,
   });
 }
