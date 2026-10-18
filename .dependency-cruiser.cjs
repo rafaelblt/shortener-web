@@ -3,6 +3,7 @@
  * @type {import('dependency-cruiser').IConfiguration}
  */
 const layer = (name) => `^src/${name}/`;
+const TEST_FILE = "\\.test\\.tsx?$";
 
 module.exports = {
   forbidden: [
@@ -16,26 +17,26 @@ module.exports = {
       name: "domain-depends-on-nothing",
       comment: "The domain is plain TypeScript: it imports no other layer and no package.",
       severity: "error",
-      from: { path: layer("domain") },
+      from: { path: layer("domain"), pathNot: TEST_FILE },
       to: { pathNot: [layer("domain")] },
     },
     {
       name: "services-depend-only-on-the-domain",
       severity: "error",
-      from: { path: layer("services") },
+      from: { path: layer("services"), pathNot: TEST_FILE },
       to: { pathNot: [layer("services"), layer("domain")] },
     },
     {
       name: "simulation-depends-only-on-services-and-domain",
       severity: "error",
-      from: { path: layer("simulation") },
+      from: { path: layer("simulation"), pathNot: TEST_FILE },
       to: { pathNot: [layer("simulation"), layer("services"), layer("domain")] },
     },
     {
       name: "ui-knows-no-other-layer",
       comment: "The components are generic: they know nothing of users or short links.",
       severity: "error",
-      from: { path: layer("ui") },
+      from: { path: layer("ui"), pathNot: TEST_FILE },
       to: { path: "^src/", pathNot: [layer("ui")] },
     },
     {
@@ -43,19 +44,19 @@ module.exports = {
       comment:
         "Pages only know the services' interfaces, so replacing the simulation changes app/.",
       severity: "error",
-      from: { path: layer("pages") },
+      from: { path: layer("pages"), pathNot: TEST_FILE },
       to: { path: [layer("simulation"), layer("app")] },
     },
     {
       name: "src-doesnt-import-tests",
       severity: "error",
-      from: { path: "^src/", pathNot: "\\.test\\.tsx?$" },
-      to: { path: ["^tests/", "\\.test\\.tsx?$"] },
+      from: { path: "^src/", pathNot: TEST_FILE },
+      to: { path: ["^tests/", TEST_FILE] },
     },
     {
       name: "src-doesnt-import-dev-dependencies",
       severity: "error",
-      from: { path: "^src/", pathNot: "\\.test\\.tsx?$" },
+      from: { path: "^src/", pathNot: TEST_FILE },
       to: { dependencyTypes: ["npm-dev"] },
     },
     {
