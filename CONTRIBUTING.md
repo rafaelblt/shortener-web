@@ -22,13 +22,14 @@ The project is developed mostly by agents. Its maintainer decides what the app d
 
 `npm run check` runs every check. There is no CI until the repository has a remote, so it runs before each commit. A change is finished when it passes.
 
-| Script              | Checks                                                                                                          |
-| ------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `npm run lint`      | The formatting, with Prettier, and the rules of ESLint, the type-checked ones of typescript-eslint and of React |
-| `npm run typecheck` | The types, with TypeScript in strict mode                                                                       |
-| `npm run layers`    | The dependencies between the [layers](docs/architecture/README.md#dependencies), with dependency-cruiser        |
-| `npm run test`      | The unit and flow tests, with Vitest, and their coverage, which has to reach the thresholds of `vite.config.ts` |
-| `npm run test:e2e`  | The browser tests, with Playwright, on a production build. It needs Chromium: `npx playwright install chromium` |
+| Script                    | Checks                                                                                                          |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `npm run lint`            | The formatting, with Prettier, and the rules of ESLint, the type-checked ones of typescript-eslint and of React |
+| `npm run contracts:check` | That the types of the [contracts](docs/architecture/contracts.md) are the ones their schemas generate           |
+| `npm run typecheck`       | The types, with TypeScript in strict mode                                                                       |
+| `npm run layers`          | The dependencies between the [layers](docs/architecture/README.md#dependencies), with dependency-cruiser        |
+| `npm run test`            | The unit and flow tests, with Vitest, and their coverage, which has to reach the thresholds of `vite.config.ts` |
+| `npm run test:e2e`        | The browser tests, with Playwright, on a production build. It needs Chromium: `npx playwright install chromium` |
 
 - `npm run format` formats the code. `npm run test:watch` runs the tests again on each change.
 - The settings of each tool are in its file: `eslint.config.js`, `.dependency-cruiser.cjs`, `vite.config.ts` (with those of Vitest), `playwright.config.ts` and the `tsconfig` files, with the reason for each choice that isn't obvious. They can change, as anything else, when a need doesn't fit them.
@@ -133,7 +134,7 @@ The documents are a reflection of the project: what they say is what the code do
 - [docs/architecture/](docs/architecture/README.md): how the code does it: the layers, and one document per layer, with what each module exports.
 - [docs/issues/](docs/issues/README.md): the known problems and the open questions.
 
-The contracts of the back ends, their endpoints and the shapes of their requests and answers, aren't written here: they belong to the documents of each back end.
+The contracts of the back ends, their endpoints and the shapes of their requests and answers, are their OpenAPI schemas, copied as they are into `contracts/` (see [Contracts](docs/architecture/contracts.md)). The documents of the back ends, which explain what they do and why, aren't copied or retold here: a document of this repository says what this app does, including what it does because of how a back end behaves.
 
 ### No repetition
 

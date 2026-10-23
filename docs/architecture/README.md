@@ -23,6 +23,8 @@ src/
 | `src/pages/`      | [pages.md](pages.md)           |
 | `src/app/`        | [app.md](app.md)               |
 
+Outside `src/`, `contracts/` holds the schemas of the back ends and the types generated from them (see [Contracts](contracts.md)).
+
 The stack: React, with React Router in its data mode, for the routes, their loaders and actions, and the forms; TypeScript; CSS Modules over the tokens of [Design](../design.md#tokens); Vite to serve and build it.
 
 ## Dependencies

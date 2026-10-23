@@ -18,20 +18,21 @@ What is specific to agents working in this repository. The project's rules aren'
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md), all of it, and [docs/architecture/README.md](docs/architecture/README.md). Then read the documents of what the task touches:
 
-| When the task                                         | Read                                                                                    |
-| ----------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| changes what a page shows or does, or a text it shows | [docs/app/pages.md](docs/app/pages.md)                                                  |
-| changes how the app looks                             | [docs/design.md](docs/design.md)                                                        |
-| changes what the simulation answers, or its demo data | [docs/app/simulation.md](docs/app/simulation.md)                                        |
-| touches `src/domain/`                                 | [docs/architecture/domain.md](docs/architecture/domain.md)                              |
-| touches `src/services/`                               | [docs/architecture/services.md](docs/architecture/services.md)                          |
-| touches `src/simulation/`                             | [docs/architecture/simulation.md](docs/architecture/simulation.md)                      |
-| touches `src/ui/`                                     | [docs/architecture/ui.md](docs/architecture/ui.md) and [docs/design.md](docs/design.md) |
-| touches `src/pages/`                                  | [docs/architecture/pages.md](docs/architecture/pages.md)                                |
-| touches `src/app/`                                    | [docs/architecture/app.md](docs/architecture/app.md)                                    |
-| touches `tests/`                                      | [Tests](CONTRIBUTING.md#tests) in CONTRIBUTING.md                                       |
-| opens, closes or adds to an issue                     | [docs/issues/README.md](docs/issues/README.md)                                          |
-| makes a commit                                        | [Commits](CONTRIBUTING.md#commits) in CONTRIBUTING.md                                   |
+| When the task                                                | Read                                                                                    |
+| ------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
+| changes what a page shows or does, or a text it shows        | [docs/app/pages.md](docs/app/pages.md)                                                  |
+| changes how the app looks                                    | [docs/design.md](docs/design.md)                                                        |
+| changes what the simulation answers, or its demo data        | [docs/app/simulation.md](docs/app/simulation.md)                                        |
+| touches `src/domain/`                                        | [docs/architecture/domain.md](docs/architecture/domain.md)                              |
+| touches `src/services/`                                      | [docs/architecture/services.md](docs/architecture/services.md)                          |
+| touches `src/simulation/`                                    | [docs/architecture/simulation.md](docs/architecture/simulation.md)                      |
+| touches `src/ui/`                                            | [docs/architecture/ui.md](docs/architecture/ui.md) and [docs/design.md](docs/design.md) |
+| touches `src/pages/`                                         | [docs/architecture/pages.md](docs/architecture/pages.md)                                |
+| touches `src/app/`                                           | [docs/architecture/app.md](docs/architecture/app.md)                                    |
+| touches `contracts/`, or what a back end receives or answers | [docs/architecture/contracts.md](docs/architecture/contracts.md)                        |
+| touches `tests/`                                             | [Tests](CONTRIBUTING.md#tests) in CONTRIBUTING.md                                       |
+| opens, closes or adds to an issue                            | [docs/issues/README.md](docs/issues/README.md)                                          |
+| makes a commit                                               | [Commits](CONTRIBUTING.md#commits) in CONTRIBUTING.md                                   |
 
 ## During a task
 

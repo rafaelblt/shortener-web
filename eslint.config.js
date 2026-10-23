@@ -6,7 +6,8 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export default defineConfig(
-  { ignores: ["dist", "coverage", "playwright-report", "test-results"] },
+  // contracts/ holds copies of the back ends' schemas, and the types generated from them.
+  { ignores: ["dist", "coverage", "playwright-report", "test-results", "contracts"] },
   js.configs.recommended,
   tseslint.configs.strictTypeChecked,
   tseslint.configs.stylisticTypeChecked,

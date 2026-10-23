@@ -17,7 +17,10 @@
     "test": "vitest run --coverage",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "check": "npm run lint && npm run typecheck && npm run layers && npm run test && npm run test:e2e"
+    "contracts:update": "cp ../go-auth/docs/api/openapi.yaml contracts/go-auth.openapi.yaml && cp ../shortener/docs/service/openapi.yaml contracts/shortener.openapi.yaml && npm run contracts:types",
+    "contracts:types": "openapi-typescript contracts/go-auth.openapi.yaml -o contracts/go-auth.ts && openapi-typescript contracts/shortener.openapi.yaml -o contracts/shortener.ts",
+    "contracts:check": "openapi-typescript contracts/go-auth.openapi.yaml -o contracts/go-auth.ts --check && openapi-typescript contracts/shortener.openapi.yaml -o contracts/shortener.ts --check",
+    "check": "npm run lint && npm run contracts:check && npm run typecheck && npm run layers && npm run test && npm run test:e2e"
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "5.3.0",
@@ -44,10 +47,16 @@
     "eslint-plugin-react-refresh": "0.5.7",
     "globals": "17.13.0",
     "jsdom": "30.1.3",
+    "openapi-typescript": "7.13.0",
     "prettier": "3.9.10",
     "typescript": "6.0.3",
     "typescript-eslint": "8.71.2",
     "vite": "8.3.4",
     "vitest": "5.0.5"
+  },
+  "overrides": {
+    "openapi-typescript": {
+      "typescript": "$typescript"
+    }
   }
 }
