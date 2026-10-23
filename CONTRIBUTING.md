@@ -97,7 +97,7 @@ How they are organized:
 
 | Kind      | Where                                  | What                                                                                              |
 | --------- | -------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| Unit      | Next to the module, `*.test.ts(x)`     | The domain, the simulation, the components and helpers of `ui/`                                   |
+| Unit      | Next to the module, `*.test.ts(x)`     | The domain, the simulation, the HTTP services, the components and helpers of `ui/`                |
 | Server    | Next to the module, `server/*.test.ts` | The [server](docs/architecture/server.md), in Node, mostly through its handler, on fake back ends |
 | Flow      | `tests/flows/`                         | The whole app, in memory: the real routes, pages and simulation, as a person uses them            |
 | Browser   | `tests/e2e/`                           | The main flows in Chromium, on a production build                                                 |
@@ -195,6 +195,7 @@ Until the repository is on GitHub, issues live in [docs/issues/](docs/issues/REA
 | `domain`                  | Rules of the values                          |
 | `services`                | What the pages ask of the back ends          |
 | `simulation`              | The simulated back ends                      |
+| `http`                    | The services that ask the server             |
 | `ui`                      | Tokens and components                        |
 | `pages`, `pages:links`    | Pages, and one page                          |
 | `app`                     | Routes, layouts and the assembly             |

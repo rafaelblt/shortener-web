@@ -33,6 +33,7 @@ src/
 ├── domain/      the rules of usernames, passwords, slugs and target URLs
 ├── services/    what the pages ask of the back ends: the interfaces, and their errors
 ├── simulation/  answers the services from memory, as the back ends would
+├── http/        answers the services by asking the server of the app
 ├── ui/          the design tokens, and the components the pages are built from
 ├── pages/       one directory per page: its loader, its action and its component
 └── app/         the routes and the layouts, assembled on the simulation

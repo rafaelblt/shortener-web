@@ -1,6 +1,6 @@
 # Services
 
-`src/services/`: what the pages ask of the back ends, as interfaces, with the failures each operation can answer. The pages only know these interfaces; the [simulation](simulation.md) implements them for now, and the implementations that call the back ends are [issue 0001](../issues/0001-the-pages-dont-consume-the-back-ends.md).
+`src/services/`: what the pages ask of the back ends, as interfaces, with the failures each operation can answer. The pages only know these interfaces. The [simulation](simulation.md) implements them, and so does [http](http.md), by asking the server of the app, which the app doesn't run on yet ([issue 0001](../issues/0001-the-pages-dont-consume-the-back-ends.md)).
 
 The interfaces are shaped after what the pages need, not after the endpoints of the back ends: an implementation keeps the tokens of the session, and calls whatever it takes, such as signing in and then asking who the user is.
 

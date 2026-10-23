@@ -7,7 +7,7 @@
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "types": ["vite/client"],
-    "paths": { "@/*": ["./src/*"], "@tests/*": ["./tests/*"] },
+    "paths": { "@/*": ["./src/*"], "@tests/*": ["./tests/*"], "@contracts/*": ["./contracts/*"] },
     "noEmit": true,
     "verbatimModuleSyntax": true,
     "erasableSyntaxOnly": true,
@@ -21,6 +21,6 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true
   },
-  "include": ["src", "tests/flows", "tests/support", "tests/setup.ts"],
+  "include": ["src", "contracts", "tests/flows", "tests/support", "tests/setup.ts"],
   "exclude": ["tests/support/server"]
 }

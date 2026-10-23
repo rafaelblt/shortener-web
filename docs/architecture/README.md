@@ -9,6 +9,7 @@ src/
 ├── domain/      the rules of usernames, passwords, slugs and target URLs
 ├── services/    what the pages ask of the back ends: the interfaces, and their errors
 ├── simulation/  answers the services from memory, as the back ends would
+├── http/        answers the services by asking the server of the app
 ├── ui/          the design tokens, and the components the pages are built from
 ├── pages/       one directory per page: its loader, its action and its component
 └── app/         the routes and the layouts, assembled on the simulation
@@ -19,6 +20,7 @@ src/
 | `src/domain/`     | [domain.md](domain.md)         |
 | `src/services/`   | [services.md](services.md)     |
 | `src/simulation/` | [simulation.md](simulation.md) |
+| `src/http/`       | [http.md](http.md)             |
 | `src/ui/`         | [ui.md](ui.md)                 |
 | `src/pages/`      | [pages.md](pages.md)           |
 | `src/app/`        | [app.md](app.md)               |
@@ -41,8 +43,9 @@ Dependencies point inward, toward the domain:
 | `domain`     | Nothing: no other layer, and no package                                             |
 | `services`   | `domain`                                                                            |
 | `simulation` | `services`, `domain`                                                                |
+| `http`       | `services`, `domain`, and the types of `contracts/`                                 |
 | `ui`         | Packages only, such as React: no other layer, so it knows nothing of users or links |
-| `pages`      | `services`, `domain`, `ui`, and packages, but not `simulation`                      |
+| `pages`      | `services`, `domain`, `ui`, and packages, but not `simulation` or `http`            |
 | `app`        | Everything: it assembles the layers                                                 |
 
 - The pages know the back ends only through the interfaces of `services`, so replacing the simulation with the real back ends changes `app`, and no page.

@@ -33,6 +33,12 @@ module.exports = {
       to: { pathNot: [layer("simulation"), layer("services"), layer("domain")] },
     },
     {
+      name: "http-depends-only-on-services-domain-and-contracts",
+      severity: "error",
+      from: { path: layer("http"), pathNot: TEST_FILE },
+      to: { pathNot: [layer("http"), layer("services"), layer("domain"), "^contracts/"] },
+    },
+    {
       name: "ui-knows-no-other-layer",
       comment: "The components are generic: they know nothing of users or short links.",
       severity: "error",
@@ -40,12 +46,12 @@ module.exports = {
       to: { path: "^src/", pathNot: [layer("ui")] },
     },
     {
-      name: "pages-dont-know-the-simulation",
+      name: "pages-dont-know-the-implementations-of-the-services",
       comment:
-        "Pages only know the services' interfaces, so replacing the simulation changes app/.",
+        "Pages only know the services' interfaces, so which implementation runs is up to app/.",
       severity: "error",
       from: { path: layer("pages"), pathNot: TEST_FILE },
-      to: { path: [layer("simulation"), layer("app")] },
+      to: { path: [layer("simulation"), layer("http"), layer("app")] },
     },
     {
       name: "src-doesnt-import-tests",

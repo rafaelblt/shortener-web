@@ -26,6 +26,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md), all of it, and [docs/architecture/READM
 | touches `src/domain/`                                        | [docs/architecture/domain.md](docs/architecture/domain.md)                              |
 | touches `src/services/`                                      | [docs/architecture/services.md](docs/architecture/services.md)                          |
 | touches `src/simulation/`                                    | [docs/architecture/simulation.md](docs/architecture/simulation.md)                      |
+| touches `src/http/`                                          | [docs/architecture/http.md](docs/architecture/http.md)                                  |
 | touches `src/ui/`                                            | [docs/architecture/ui.md](docs/architecture/ui.md) and [docs/design.md](docs/design.md) |
 | touches `src/pages/`                                         | [docs/architecture/pages.md](docs/architecture/pages.md)                                |
 | touches `src/app/`                                           | [docs/architecture/app.md](docs/architecture/app.md)                                    |
