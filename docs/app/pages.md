@@ -1,6 +1,6 @@
 # Pages
 
-What each page shows and does, and the texts a person reads on it. How the code does it is in [the architecture of the pages](../architecture/pages.md), and how the pages look, in [Design](../design.md). Every page works on the [simulation](simulation.md) for now.
+What each page shows and does, and the texts a person reads on it. How the code does it is in [the architecture of the pages](../architecture/pages.md), and how the pages look, in [Design](../design.md). The app runs on go-auth and the shortener, through its server, or, in development and in its tests, on the [simulation](simulation.md), which stands in for them.
 
 ## Overview
 
@@ -18,7 +18,7 @@ What each page shows and does, and the texts a person reads on it. How the code 
 - Sign in and Create an account, opened by whoever is signed in, send to Links.
 - The pages for signed-in users share a header: the wordmark, which leads to Links, the navigation, with Links and Account, the username, and **Sign out**.
 - A thin bar runs along the top of the window while a page loads or a form is sent, if it takes more than a moment.
-- Every page shows the banner of the [simulation](simulation.md#the-banner) above everything else.
+- In the simulation, every page shows its [banner](simulation.md#the-banner) above everything else.
 
 ### The rules of the values
 
@@ -116,11 +116,12 @@ A link that doesn't exist, or that belongs to someone else, gets _This link does
 
 ## A short link
 
-What following a short link shows, without the header of the app. While the app is simulated, short links are addresses of the app itself, `/s/` and the slug, and this page stands in for the domain of short links (see [issue 0004](../issues/0004-what-a-visitor-sees-on-the-domain-of-short-links-is-undecided.md)).
+Short links are addresses of the app itself, `/s/` and the slug, until they get a domain of their own (see [issue 0004](../issues/0004-what-a-visitor-sees-on-the-domain-of-short-links-is-undecided.md)). Following an active one counts a visit, and leads straight to its target URL. For a link that leads nowhere, the page says why, without the header of the app:
 
-- **An active link**: the short link, the target URL it leads to, and **Continue**, which opens it. It says that the real short link redirects straight away, and that the visit was counted.
 - **A deactivated link**: _This link is turned off._, and that its owner deactivated it.
 - **An unknown slug**: _There's no link here._, and that slugs tell uppercase from lowercase.
+
+In the simulation, which leaving the app would lose, an active link doesn't lead straight to its target either: the page shows the short link, the target URL it leads to, and **Continue**, which opens it, and says that the real short link redirects straight away, and that the visit was counted.
 
 ## Not found
 
@@ -128,4 +129,4 @@ An address that is no page of the app gets _There's no page at this address._, w
 
 ## Errors
 
-When something fails, the page gets _Something went wrong._ and **Try again**, which loads the page again. When the session ended meanwhile, the person is sent to [Sign in](#sign-in) instead, which brings them back afterwards.
+When something fails, a back end included, such as when one can't be reached or refuses too many requests, the page gets _Something went wrong._ and **Try again**, which loads the page again. When the session ended meanwhile, the person is sent to [Sign in](#sign-in) instead, which brings them back afterwards.

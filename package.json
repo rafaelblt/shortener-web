@@ -7,8 +7,10 @@
     "node": ">=24"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --mode simulation",
+    "dev:real": "vite",
     "build": "vite build",
+    "build:simulation": "vite build --mode simulation",
     "preview": "vite preview",
     "start": "node server/main.ts",
     "server": "node --env-file-if-exists=.env server/main.ts",

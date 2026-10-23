@@ -1,6 +1,6 @@
 # Simulation
 
-The app doesn't reach the back ends yet ([issue 0001](../issues/0001-the-pages-dont-consume-the-back-ends.md)): a simulation stands in for go-auth and the shortener, so that every page and flow can be seen and tried. How the code does it is in [the architecture of the simulation](../architecture/simulation.md).
+A simulation can stand in for go-auth and the shortener, so that every page and flow can be seen and tried without them. The app runs on it in development and in its tests, and on the back ends once deployed. How the code does it is in [the architecture of the simulation](../architecture/simulation.md).
 
 ## What it keeps
 
@@ -12,7 +12,7 @@ Everything lives in the memory of the browser tab: the accounts, who is signed i
 
 ## The banner
 
-Every page shows a banner above everything else, which says that nothing reaches a server, that it all resets on reload, and the username and the password of the demo account.
+Every page of the simulation shows a banner above everything else, which says that nothing reaches a server, that it all resets on reload, and the username and the password of the demo account.
 
 ## The demo account
 

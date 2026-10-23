@@ -1,9 +1,9 @@
-import { Link, useLoaderData } from "react-router";
+import { Link, redirect, useLoaderData } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
 
 import { buttonClassName } from "@/ui/button-class-name";
 
-import { servicesContext } from "../shared/route-context";
+import { servicesContext, simulatedContext } from "../shared/route-context";
 import { shortLinkText } from "../shared/short-link";
 import styles from "./ShortLinkPage.module.css";
 
@@ -14,14 +14,15 @@ type ShortLinkData =
 export async function loader({ params, context }: LoaderFunctionArgs): Promise<ShortLinkData> {
   const slug = params.slug ?? "";
   const result = await context.get(servicesContext).shortUrls.resolve(slug);
-  if (result.ok) return { slug, outcome: "found", targetUrl: result.value };
-  return { slug, outcome: result.error.code };
+  if (!result.ok) return { slug, outcome: result.error.code };
+  // Leaving the app would lose the simulation, so it shows where the link leads instead.
+  if (!context.get(simulatedContext)) throw redirect(result.value);
+  return { slug, outcome: "found", targetUrl: result.value };
 }
 
 /**
- * What following a short link shows. The real domain of short links will redirect at once; this
- * page stands in for it in the simulation, and shows where the link leads instead of leaving the
- * app, whose memory would be lost.
+ * What following a short link shows: why it leads nowhere, or, in the simulation, where it leads.
+ * The server redirects an active link before the app loads; the app does when it follows one.
  */
 export function ShortLinkPage() {
   const data = useLoaderData<ShortLinkData>();

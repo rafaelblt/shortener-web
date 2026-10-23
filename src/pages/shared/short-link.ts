@@ -1,6 +1,6 @@
 /**
- * Where short links live. The simulation resolves them in this app, under /s; the real domain of
- * short links is set with VITE_SHORT_LINK_BASE_URL.
+ * Where short links live: under /s, where the server of the app follows them, unless
+ * VITE_SHORT_LINK_BASE_URL names another address.
  */
 const BASE_URL = import.meta.env.VITE_SHORT_LINK_BASE_URL ?? `${window.location.origin}/s`;
 

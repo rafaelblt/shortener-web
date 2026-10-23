@@ -2,7 +2,7 @@ import { DEMO_CREDENTIALS } from "@/simulation/demo-data";
 
 import styles from "./SimulationBanner.module.css";
 
-/** Says that nothing is real yet. It goes away with the simulation. */
+/** Says that nothing reaches a server, above every page of the simulation. */
 export function SimulationBanner() {
   return (
     <p className={styles.banner}>

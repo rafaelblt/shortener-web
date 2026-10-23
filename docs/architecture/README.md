@@ -12,7 +12,7 @@ src/
 ├── http/        answers the services by asking the server of the app
 ├── ui/          the design tokens, and the components the pages are built from
 ├── pages/       one directory per page: its loader, its action and its component
-└── app/         the routes and the layouts, assembled on the simulation
+└── app/         the routes and the layouts, assembled on the simulation or on http
 ```
 
 | Layer             | Document                       |
@@ -48,7 +48,7 @@ Dependencies point inward, toward the domain:
 | `pages`      | `services`, `domain`, `ui`, and packages, but not `simulation` or `http`            |
 | `app`        | Everything: it assembles the layers                                                 |
 
-- The pages know the back ends only through the interfaces of `services`, so replacing the simulation with the real back ends changes `app`, and no page.
+- The pages know the back ends only through the interfaces of `services`, so which implementation runs is up to `app`, and no page changes with it.
 - No module of `src/` imports a test, or a development dependency, but a declaration of types.
 - The server imports nothing of `src/` or of the tests, and no package, only Node's own modules and the types of `contracts/`, and `src/` imports nothing of the server.
 - No import is circular.
@@ -61,7 +61,7 @@ How the app shortens a link, as every form does:
 
 1. The person sends the form of [Links](../app/pages.md#links). React Router calls the [action](pages.md#a-page) of the page, with the form's data and the router's context, which holds the [services](services.md), as [app](app.md#the-router) put them there.
 2. Before the action, the [middleware](app.md#the-guard) of the pages for signed-in users checks that someone is signed in, and puts the user in the context.
-3. The action checks the values with the rules of the [domain](domain.md), and asks `ShortUrlService.create()`, which the [simulation](simulation.md) implements, and which checks them again, as the back end will.
+3. The action checks the values with the rules of the [domain](domain.md), and asks `ShortUrlService.create()`, which [http](http.md) implements by asking the [server](server.md), which asks the shortener, and the [simulation](simulation.md) by checking them again, as the shortener does.
 4. It returns what the page shows: the new link, or the message of each field at fault. React Router then runs the loaders of the page again, so the list shows the new link.
 
 ## Across the layers

@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { renderApp } from "@tests/support/render-app";
@@ -29,6 +29,19 @@ describe("following a short link", () => {
     unwrap(await services.auth.signIn(ALICE));
     const { items } = await services.shortUrls.list({ limit: 1 });
     expect(items[0]?.resolutionCount).toBe(1);
+  });
+
+  it("goes straight where it leads, counting the resolution, outside the simulation", async () => {
+    const services = await servicesWithLink("active");
+    renderApp("/s/my-link", services, { simulated: false });
+
+    unwrap(await services.auth.signIn(ALICE));
+    await waitFor(async () => {
+      const { items } = await services.shortUrls.list({ limit: 1 });
+      expect(items[0]?.resolutionCount).toBe(1);
+    });
+    // jsdom loads no other site, so the app is left showing nothing of its own.
+    expect(screen.queryByRole("heading")).not.toBeInTheDocument();
   });
 
   it("says that a deactivated link is turned off", async () => {

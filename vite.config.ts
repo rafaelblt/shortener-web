@@ -1,9 +1,15 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
 
+// Where npm run dev:real finds the server of the app, which npm run server starts.
+const SERVER = "http://localhost:3000";
+
 export default defineConfig({
   plugins: [react()],
   resolve: { tsconfigPaths: true },
+  // The app that reaches the server asks it at its own address, so the server of development
+  // passes those requests on. The simulation asks nothing.
+  server: { proxy: { "/api": SERVER } },
   test: {
     // Dates are formatted in the local time zone, so the tests fix it.
     env: { TZ: "UTC" },

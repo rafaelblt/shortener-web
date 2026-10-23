@@ -4,7 +4,7 @@ The web front end of the shortener: where a person creates an account, signs in,
 
 ## Where it stands
 
-**The pages are designed, and nothing reaches a server yet.** Every page and flow works against a [simulation](docs/app/simulation.md) that keeps everything in the memory of the browser tab, so the design can be seen and tried while the back ends get ready. A reload starts over. Consuming the real back ends is [issue 0001](docs/issues/0001-the-pages-dont-consume-the-back-ends.md).
+**The app runs on go-auth and the shortener, through a server of its own, and isn't deployed yet** ([issue 0003](docs/issues/0003-nothing-builds-or-serves-the-app-for-a-deploy.md)). In development, and in its tests, it runs on a [simulation](docs/app/simulation.md) that keeps everything in the memory of the browser tab, so that every page can be seen and tried without the back ends.
 
 ## Scope
 
@@ -13,9 +13,9 @@ The app:
 - creates accounts, signs in and out, and changes the password;
 - shortens links, with a slug of the person's choice or a random one;
 - lists the links of the signed-in person, and shows, edits, activates, deactivates and deletes each one;
-- shows where a short link leads, standing in for the domain of short links while it is simulated.
+- follows a short link, at an address of its own, to where it leads.
 
-It doesn't issue tokens, store users or links, or redirect short links itself: those belong to the back ends.
+It doesn't issue tokens or store users or links: those belong to the back ends. Its server keeps the session of each browser, and passes the requests of the app, and the short links, on to them.
 
 ## How it fits
 
@@ -24,7 +24,7 @@ browser ──▶ shortener-web ──▶ go-auth     accounts and sessions
                           └─▶ shortener   short links
 ```
 
-Two back ends, each its own project: go-auth, which holds the accounts and issues the access tokens, and the shortener, which holds the short links and checks those tokens. Until [issue 0001](docs/issues/0001-the-pages-dont-consume-the-back-ends.md) is done, the simulation stands in for both.
+Two back ends, each its own project: go-auth, which holds the accounts and issues the access tokens, and the shortener, which holds the short links and checks those tokens. The browser reaches only the server of shortener-web, which keeps the tokens of go-auth in an encrypted cookie, so that no script of the page can read them, and asks the back ends for the app (see [Server](docs/architecture/server.md)).
 
 ## Architecture
 
@@ -53,7 +53,17 @@ npx playwright install chromium   # once, for the tests in a browser
 npm run dev
 ```
 
-The app answers at `http://localhost:5173`. Sign in with the demo account, `demo` and `demo-password`, which has a dozen links, or create an account.
+The app answers at `http://localhost:5173`, on the simulation. Sign in with the demo account, `demo` and `demo-password`, which has a dozen links, or create an account.
+
+To run it on the back ends instead, with go-auth and the shortener running, and the shortener taking go-auth's tokens, with `JWT_ALGORITHMS=EdDSA` and `JWT_JWKS_URL` set to go-auth's `/.well-known/jwks.json`:
+
+```bash
+cp .env.example .env   # then set SESSION_KEY, and the addresses of the back ends
+npm run server         # the server of the app, at http://localhost:3000
+npm run dev:real       # the app, at http://localhost:5173, which asks that server
+```
+
+`npm run build` and `npm run server` serve the build, as it is deployed, at `http://localhost:3000`.
 
 ```bash
 npm run check

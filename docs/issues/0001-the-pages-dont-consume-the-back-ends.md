@@ -1,6 +1,6 @@
 ---
-status: open
-resolution:
+status: closed
+resolution: fixed
 labels: [todo, services, app, docs]
 ---
 
@@ -20,3 +20,12 @@ Still to be decided, by the maintainer:
 - What the app does when a back end can't answer, which the simulation never shows.
 
 The back ends are changing meanwhile, and the implementations depend on it: go-auth is getting an endpoint that answers who the user is, and a sign-out that ends the session on its side, and the shortener is to accept the access tokens of go-auth, which have no issuer or audience.
+
+## 2026-10-23: Closed as fixed
+
+The app runs on go-auth and the shortener, through a server of its own, in `server/`, and the simulation became a mode of the app, for development and the tests: `src/app/main.tsx` builds the services that ask that server, `src/http/`, unless Vite builds the simulation. The questions left open were decided by the maintainer:
+
+- **How this repository documents what it consumes**: it copies the OpenAPI schemas of the back ends as they are, into `contracts/`, and generates their types, which `npm run check` keeps in step with them. The documents of the back ends aren't copied. See `docs/architecture/contracts.md`.
+- **Where the tokens are kept, and how they are refreshed**: the server keeps them, in an `HttpOnly` cookie it encrypts, and refreshes a session one request at a time, keeping the refreshed one for five minutes for the requests that carry the cookie it replaced. go-auth's documents recommend a backend-for-frontend for a browser since 2026-10-21. See `docs/architecture/server.md`.
+- **How the app reaches the back ends once deployed**: through that same server, the only one the browser reaches. Building and deploying it stays with issue 0003.
+- **What the app does when a back end can't answer**: the error page, as for any failure, for now.

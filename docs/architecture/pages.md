@@ -51,6 +51,10 @@ Each page is a route module of React Router: a module that exports what the rout
 - `EditLinkForm` enables **Save changes** by comparing the fields with the saved values on each change, and is keyed by the saved values, so that it starts over once they change.
 - `DeleteLink` keeps whether it is asking for confirmation in its state; only the confirmation is a form.
 
+## A short link
+
+`short-link/`: the loader resolves the slug, and redirects to where an active link leads, unless `simulatedContext` says that the services are the simulation, which leaving the app would lose; then the page shows where the link leads. For a slug that leads nowhere, the page says why.
+
 ## The error page
 
 `error/ErrorPage.tsx`: the `ErrorBoundary` of the routes. A `NotSignedInError` sends to `/sign-in`, with the address as `next`; any other error shows the page, whose **Try again** runs the loaders again with `useRevalidator()`, without reloading the tab, which would lose the [simulation](simulation.md).
@@ -61,7 +65,7 @@ Each page is a route module of React Router: a module that exports what the rout
 
 | Module                                                              | Exports                                                                                                                                                                                                        |
 | ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `route-context.ts`                                                  | `servicesContext` and `signedInUserContext`, the contexts of the router that hold the services and the signed-in user                                                                                          |
+| `route-context.ts`                                                  | `servicesContext`, `simulatedContext` and `signedInUserContext`, the contexts of the router that hold the services, whether they are the simulation, and the signed-in user                                    |
 | `form-data.ts`                                                      | `formText(formData, name)`: the text of a field, or `""`                                                                                                                                                       |
 | `field-messages.ts`                                                 | `fieldMessage(field, issue)` and `fieldMessages(issues)`: the [messages](../app/pages.md#the-messages-of-the-fields) of the fields, from one table                                                             |
 | `notices.ts`                                                        | `withNotice(path, name)` adds a notice to the address a redirect leads to, as `?notice=signed-out`, and `useNotice()` reads its text; the [notices](../app/pages.md#notices) are one table                     |
