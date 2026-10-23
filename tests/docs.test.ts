@@ -19,6 +19,7 @@ const DOCUMENTS = [...globSync("*.md", { cwd: ROOT }), ...globSync("docs/**/*.md
 
 const CODE = [
   ...globSync("src/**/*.{ts,tsx,css}", { cwd: ROOT }),
+  ...globSync("server/**/*.ts", { cwd: ROOT }),
   ...globSync("tests/**/*.{ts,tsx}", { cwd: ROOT }),
   ...globSync("*.{ts,js,cjs}", { cwd: ROOT }),
   ...globSync(".*.cjs", { cwd: ROOT }),

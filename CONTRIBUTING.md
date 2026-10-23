@@ -34,7 +34,7 @@ The project is developed mostly by agents. Its maintainer decides what the app d
 - `npm run format` formats the code. `npm run test:watch` runs the tests again on each change.
 - The settings of each tool are in its file: `eslint.config.js`, `.dependency-cruiser.cjs`, `vite.config.ts` (with those of Vitest), `playwright.config.ts` and the `tsconfig` files, with the reason for each choice that isn't obvious. They can change, as anything else, when a need doesn't fit them.
 - A finding is fixed in the code. A line that breaks a rule on purpose says so with an `eslint-disable-next-line` that names the rule and gives the reason after `--`.
-- The coverage has to stay at 100% of the lines and the functions of `src/`, and the thresholds are raised as it grows, never lowered. Only `src/app/main.tsx`, which starts the app in the browser, is left out. Code that the tests can't reach is code to simplify.
+- The coverage has to stay at 100% of the lines and the functions of `src/` and `server/`, and the thresholds are raised as it grows, never lowered. Only `src/app/main.tsx`, which starts the app in the browser, and `server/main.ts`, which starts the server, are left out. Code that the tests can't reach is code to simplify.
 
 ## Principles
 
@@ -95,14 +95,15 @@ How they are written:
 
 How they are organized:
 
-| Kind      | Where                              | What                                                                                   |
-| --------- | ---------------------------------- | -------------------------------------------------------------------------------------- |
-| Unit      | Next to the module, `*.test.ts(x)` | The domain, the simulation, the components and helpers of `ui/`                        |
-| Flow      | `tests/flows/`                     | The whole app, in memory: the real routes, pages and simulation, as a person uses them |
-| Browser   | `tests/e2e/`                       | The main flows in Chromium, on a production build                                      |
-| Documents | `tests/docs.test.ts`               | The links of the [documents](#documents)                                               |
+| Kind      | Where                                  | What                                                                                              |
+| --------- | -------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Unit      | Next to the module, `*.test.ts(x)`     | The domain, the simulation, the components and helpers of `ui/`                                   |
+| Server    | Next to the module, `server/*.test.ts` | The [server](docs/architecture/server.md), in Node, mostly through its handler, on fake back ends |
+| Flow      | `tests/flows/`                         | The whole app, in memory: the real routes, pages and simulation, as a person uses them            |
+| Browser   | `tests/e2e/`                           | The main flows in Chromium, on a production build                                                 |
+| Documents | `tests/docs.test.ts`                   | The links of the [documents](#documents)                                                          |
 
-- The helpers the tests share are in `tests/support/`, imported as `@tests/support/…`: the simulated services with the test options, and rendering the app.
+- The helpers the tests share are in `tests/support/`, imported as `@tests/support/…`: the simulated services with the test options, and rendering the app. Those of the server's tests are in `tests/support/server/`, imported by their relative path, with its `.ts`, as the server imports its modules.
 - The pages and the app aren't tested on their own: a page's loader, action and component are checked together, through the router, by the flows.
 - The browser tests are few, for what only a browser shows: the production build, real navigation, an address opened directly.
 
@@ -197,6 +198,7 @@ Until the repository is on GitHub, issues live in [docs/issues/](docs/issues/REA
 | `ui`                      | Tokens and components                        |
 | `pages`, `pages:links`    | Pages, and one page                          |
 | `app`                     | Routes, layouts and the assembly             |
+| `server`                  | The server of the app                        |
 | `support`, `flows`, `e2e` | Test infrastructure and suites (with `test`) |
 | `issues`                  | Issue files (with `docs`)                    |
 

@@ -36,6 +36,8 @@ src/
 ├── ui/          the design tokens, and the components the pages are built from
 ├── pages/       one directory per page: its loader, its action and its component
 └── app/         the routes and the layouts, assembled on the simulation
+server/          the server of the app: its files, the sessions, and the requests to the back ends
+contracts/       the schemas of the back ends, and the types generated from them
 ```
 
 Dependencies point inward, and a check fails when they don't. The details are in [docs/architecture/](docs/architecture/README.md).

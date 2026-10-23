@@ -61,6 +61,35 @@ module.exports = {
       to: { dependencyTypes: ["npm-dev"] },
     },
     {
+      name: "src-doesnt-import-the-server",
+      comment: "The app reaches the server through HTTP only.",
+      severity: "error",
+      from: { path: "^src/" },
+      to: { path: "^server/" },
+    },
+    {
+      name: "server-knows-nothing-of-the-app",
+      severity: "error",
+      from: { path: "^server/", pathNot: TEST_FILE },
+      to: { path: ["^src/", "^tests/"] },
+    },
+    {
+      name: "server-imports-only-node",
+      comment: "The image of the server installs no package: it runs on Node's own modules.",
+      severity: "error",
+      from: { path: "^server/", pathNot: TEST_FILE },
+      to: {
+        dependencyTypes: [
+          "npm",
+          "npm-dev",
+          "npm-optional",
+          "npm-peer",
+          "npm-no-pkg",
+          "npm-unknown",
+        ],
+      },
+    },
+    {
       name: "no-unresolvable",
       severity: "error",
       from: {},

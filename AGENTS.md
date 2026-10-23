@@ -29,6 +29,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md), all of it, and [docs/architecture/READM
 | touches `src/ui/`                                            | [docs/architecture/ui.md](docs/architecture/ui.md) and [docs/design.md](docs/design.md) |
 | touches `src/pages/`                                         | [docs/architecture/pages.md](docs/architecture/pages.md)                                |
 | touches `src/app/`                                           | [docs/architecture/app.md](docs/architecture/app.md)                                    |
+| touches `server/`                                            | [docs/architecture/server.md](docs/architecture/server.md)                              |
 | touches `contracts/`, or what a back end receives or answers | [docs/architecture/contracts.md](docs/architecture/contracts.md)                        |
 | touches `tests/`                                             | [Tests](CONTRIBUTING.md#tests) in CONTRIBUTING.md                                       |
 | opens, closes or adds to an issue                            | [docs/issues/README.md](docs/issues/README.md)                                          |

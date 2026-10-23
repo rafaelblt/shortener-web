@@ -23,7 +23,12 @@ src/
 | `src/pages/`      | [pages.md](pages.md)           |
 | `src/app/`        | [app.md](app.md)               |
 
-Outside `src/`, `contracts/` holds the schemas of the back ends and the types generated from them (see [Contracts](contracts.md)).
+Outside `src/`:
+
+| Directory    | What                                                                                                  | Document                     |
+| ------------ | ----------------------------------------------------------------------------------------------------- | ---------------------------- |
+| `server/`    | The server of the app: serves its files, keeps the sessions, and passes its requests to the back ends | [server.md](server.md)       |
+| `contracts/` | The schemas of the back ends, and the types generated from them                                       | [contracts.md](contracts.md) |
 
 The stack: React, with React Router in its data mode, for the routes, their loaders and actions, and the forms; TypeScript; CSS Modules over the tokens of [Design](../design.md#tokens); Vite to serve and build it.
 
@@ -42,6 +47,7 @@ Dependencies point inward, toward the domain:
 
 - The pages know the back ends only through the interfaces of `services`, so replacing the simulation with the real back ends changes `app`, and no page.
 - No module of `src/` imports a test, or a development dependency, but a declaration of types.
+- The server imports nothing of `src/` or of the tests, and no package, only Node's own modules and the types of `contracts/`, and `src/` imports nothing of the server.
 - No import is circular.
 
 dependency-cruiser checks these rules, with `.dependency-cruiser.cjs` (see [Checks](../../CONTRIBUTING.md#checks)). The tests may import any layer.

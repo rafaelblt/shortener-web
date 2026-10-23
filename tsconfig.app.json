@@ -21,5 +21,6 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true
   },
-  "include": ["src", "tests/flows", "tests/support", "tests/setup.ts"]
+  "include": ["src", "tests/flows", "tests/support", "tests/setup.ts"],
+  "exclude": ["tests/support/server"]
 }
