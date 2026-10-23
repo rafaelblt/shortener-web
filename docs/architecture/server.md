@@ -95,6 +95,17 @@ A request that isn't a `GET` or a `HEAD`, out of `/api/`, gets `405`.
 
 The back ends count their rate limits by the client's address, which the server gives them as `X-Forwarded-For`, so they have to trust the server's address for it. The address is the one in `CLIENT_ADDRESS_HEADER`, when it is set and the request has the header, or else the peer of the connection. Set it only to a header that the proxy in front of the server always sets, replacing the one a client sent, or a client could choose its address.
 
+## The image
+
+`Dockerfile` builds the image that is deployed. Its first stage installs the dependencies and builds the app; the image keeps only Node, `server/`, the build in `dist/`, and `package.json`, which says that the modules are ES modules. It runs `node server/main.ts` as the user `node`, and listens on `PORT`. `.dockerignore` keeps out what the build doesn't need, and a `.env`, which may hold a session key.
+
+The browser reaches only this server, so go-auth and the shortener need no public address. Deploying it takes:
+
+- The [settings](#settings), with a `SESSION_KEY` of its own.
+- A shortener that takes go-auth's tokens: `JWT_ALGORITHMS=EdDSA`, and `JWT_JWKS_URL` at go-auth's `/.well-known/jwks.json`, without `JWT_ISSUER` or `JWT_AUDIENCE`, since go-auth's tokens have no `iss` or `aud`.
+- Back ends that trust the address of this server with `X-Forwarded-For`, for their rate limits: go-auth with `TRUSTED_PROXIES`, and the shortener with uvicorn's `FORWARDED_ALLOW_IPS`. Otherwise, every client counts as this server.
+- Behind a proxy, `CLIENT_ADDRESS_HEADER`, for the [address of the client](#the-address-of-the-client). On Railway, it is `X-Real-IP`, which its proxy sets, by its documents; since its forum reports that this changed before, check the address the back ends log after a deploy.
+
 ## Modules
 
 | Module                                                                 | Exports                                                                                                                                                                                                                                    |

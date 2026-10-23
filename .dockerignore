@@ -1,0 +1,12 @@
+# What the image doesn't need, or mustn't hold, such as a .env with the session key.
+.git
+node_modules
+dist
+coverage
+playwright-report
+test-results
+.env
+.env.*
+tests
+**/*.test.ts
+**/*.test.tsx

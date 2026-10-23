@@ -4,7 +4,7 @@ The web front end of the shortener: where a person creates an account, signs in,
 
 ## Where it stands
 
-**The app runs on go-auth and the shortener, through a server of its own, and isn't deployed yet** ([issue 0003](docs/issues/0003-nothing-builds-or-serves-the-app-for-a-deploy.md)). In development, and in its tests, it runs on a [simulation](docs/app/simulation.md) that keeps everything in the memory of the browser tab, so that every page can be seen and tried without the back ends.
+**The app runs on go-auth and the shortener, through a server of its own, and isn't deployed yet.** Its image, and what deploying it takes, are in [The image](docs/architecture/server.md#the-image). In development, and in its tests, it runs on a [simulation](docs/app/simulation.md) that keeps everything in the memory of the browser tab, so that every page can be seen and tried without the back ends.
 
 ## Scope
 
