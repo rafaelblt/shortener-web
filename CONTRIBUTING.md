@@ -10,9 +10,16 @@ The project is developed mostly by agents. Its maintainer decides what the app d
 - What only the maintainer can decide is asked, and not decided or deduced: a page or a flow, a text a person reads, a change of the visual language, a contract with the back ends, the reason behind a past decision, or a trade-off that the documents don't settle.
 - A problem found outside the change is reported, or recorded as an [issue](#issues), and not fixed in the same change.
 
+## Reporting a problem, or proposing a change
+
+- A bug, or a question, is an [issue](https://github.com/rafaelblt/shortener-web/issues), as [Issues](#issues) describes.
+- A change that isn't small, such as one beyond a typo or a broken link, starts as an issue, to agree on it before the work: the maintainer decides what the app does and how it looks (see [How the project is developed](#how-the-project-is-developed)).
+- A change comes as a pull request, made as [Making a change](#making-a-change) says, with commits that follow [Commits](#commits), and the [CI](#checks) has to pass.
+- A contribution is licensed under the [MIT License](LICENSE), as the project is.
+
 ## Making a change
 
-1. Read the [README](README.md), this document, and the documents of what the change touches: those of `docs/app/` and `docs/design.md` for what the app does and how it looks, and those of [docs/architecture/](docs/architecture/README.md) for the code. Then read the open issues of the area.
+1. Read the [README](README.md), this document, and the documents of what the change touches: those of `docs/app/` and `docs/design.md` for what the app does and how it looks, and those of [docs/architecture/](docs/architecture/README.md) for the code. Then read the [open issues](https://github.com/rafaelblt/shortener-web/issues) of the area, by its `area:` label.
 2. Change the code, its tests and its documents together.
 3. Look at what a person sees: `npm run dev`, in the light and the dark theme, on a wide and a narrow window.
 4. Run `npm run check` until it passes.
