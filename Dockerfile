@@ -8,9 +8,10 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 COPY . .
-RUN npm run build
+# Both builds: the server serves the app on the back ends, or the simulation with SIMULATION=true.
+RUN npm run build && npm run build:simulation
 
-# Runtime stage: Node, the server and the build of the app. The server imports no package, and
+# Runtime stage: Node, the server and the builds of the app. The server imports no package, and
 # Node runs its TypeScript as it is, so there is no node_modules and no build of the server.
 # package.json stays, since it says the modules are ES modules.
 FROM node:24-alpine AS runtime

@@ -1,6 +1,6 @@
 import { fileURLToPath } from "node:url";
 
-import { createApp } from "../../../server/app.ts";
+import { createApp, createSimulationApp } from "../../../server/app.ts";
 import type { Handler } from "../../../server/app.ts";
 import { FakeBackEnds, GO_AUTH_URL, SHORTENER_URL } from "./fake-back-ends.ts";
 
@@ -28,6 +28,11 @@ export function createTestApp({ clientAddressHeader }: { clientAddressHeader?: s
     newId: () => `id-${String(++lastId)}`,
   });
   return { app, backEnds, browser: new TestBrowser(app) };
+}
+
+/** The server of the simulation, on the build of the app, and a browser that talks to it. */
+export function createSimulationTestApp() {
+  return { browser: new TestBrowser(createSimulationApp(STATIC_DIRECTORY)) };
 }
 
 /** The server, with Alice signed in on its browser. */

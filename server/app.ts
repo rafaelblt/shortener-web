@@ -6,12 +6,12 @@ import { errorAnswer } from "./messages.ts";
 import { SessionCookies } from "./session-cookies.ts";
 import { SessionRoutes } from "./session-routes.ts";
 import { Sessions } from "./sessions.ts";
-import type { ServerSettings } from "./settings.ts";
+import type { BackEndSettings } from "./settings.ts";
 import { ShortenerRoutes } from "./shortener-routes.ts";
 import { StaticFiles } from "./static-files.ts";
 
 export interface AppDependencies {
-  settings: Omit<ServerSettings, "port">;
+  settings: BackEndSettings;
   /** Where the build of the app is. */
   staticDirectory: string;
   fetch: Fetch;
@@ -25,7 +25,7 @@ export type Handler = (request: Request, peerAddress: string) => Promise<Respons
 const SHORTENER_API = "/api/v1/";
 const SHORT_LINK = /^\/s\/([^/]+)$/;
 
-/** The server of the app: its API, the shortener's, the short links, and the app's files. */
+/** The server on the back ends: its API, the shortener's, the short links, and the app's files. */
 export function createApp({
   settings,
   staticDirectory,
@@ -65,23 +65,39 @@ export function createApp({
       const answer = api.get(`${method} ${path}`);
       return answer ? answer(incoming) : errorAnswer(404, "route_not_found", "No route here.");
     }
-    if (!isSafe(method))
-      return new Response(null, { status: 405, headers: { allow: "GET, HEAD" } });
+    if (!isSafe(method)) return methodNotAllowed();
     // Only a GET follows a short link, since following it counts a resolution.
     const slug = method === "GET" ? SHORT_LINK.exec(path)?.[1] : undefined;
     return slug === undefined ? staticFiles.answer(path) : shortener.follow(incoming, slug);
   }
 
-  return async (request, peerAddress) => {
-    const incoming = {
+  return answeringFailures((request, peerAddress) =>
+    route({
       request,
       url: new URL(request.url),
       clientAddress: clientAddressOf(request, peerAddress, settings.clientAddressHeader),
-    };
+    }),
+  );
+}
+
+/**
+ * The server of the simulation, which asks no back end: the files of its build, and its page for
+ * any route, short links included.
+ */
+export function createSimulationApp(staticDirectory: string): Handler {
+  const staticFiles = new StaticFiles(staticDirectory);
+  return answeringFailures(async (request) =>
+    isSafe(request.method) ? staticFiles.answer(new URL(request.url).pathname) : methodNotAllowed(),
+  );
+}
+
+/** The handler, which logs a request it fails, and answers it 500, or 502 if a back end failed. */
+function answeringFailures(handler: Handler): Handler {
+  return async (request, peerAddress) => {
     try {
-      return await route(incoming);
+      return await handler(request, peerAddress);
     } catch (error) {
-      console.error(`${request.method} ${incoming.url.pathname} failed:`, error);
+      console.error(`${request.method} ${new URL(request.url).pathname} failed:`, error);
       return error instanceof BackEndError
         ? errorAnswer(502, "back_end_failed", "A back end failed to answer.")
         : errorAnswer(500, "internal_error", "The server failed.");
@@ -91,6 +107,10 @@ export function createApp({
 
 function isSafe(method: string): boolean {
   return method === "GET" || method === "HEAD";
+}
+
+function methodNotAllowed(): Response {
+  return new Response(null, { status: 405, headers: { allow: "GET, HEAD" } });
 }
 
 // A form of another site can't send JSON without the browser asking first, which this server never

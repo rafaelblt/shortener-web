@@ -4,6 +4,11 @@ const SESSION_KEY_BYTES = 32;
 /** What the server reads from its environment. See docs/architecture/server.md#settings */
 export interface ServerSettings {
   port: number;
+  /** The back ends the app runs on, or null for the simulation, which has none. */
+  backEnds: BackEndSettings | null;
+}
+
+export interface BackEndSettings {
   /** Where go-auth answers, such as `http://go-auth.railway.internal:8080`. */
   goAuthUrl: string;
   /** Where the shortener's API answers. */
@@ -24,11 +29,23 @@ export function settingsFromEnvironment(
 ): ServerSettings {
   return {
     port: portFrom(environment.PORT),
+    backEnds: simulationFrom(environment.SIMULATION) ? null : backEndSettingsFrom(environment),
+  };
+}
+
+function backEndSettingsFrom(environment: Record<string, string | undefined>): BackEndSettings {
+  return {
     goAuthUrl: urlFrom("GO_AUTH_URL", environment.GO_AUTH_URL),
     shortenerUrl: urlFrom("SHORTENER_URL", environment.SHORTENER_URL),
     sessionKey: sessionKeyFrom(environment.SESSION_KEY),
     clientAddressHeader: headerFrom(environment.CLIENT_ADDRESS_HEADER),
   };
+}
+
+function simulationFrom(value: string | undefined): boolean {
+  if (value === undefined || value === "" || value === "false") return false;
+  if (value === "true") return true;
+  throw new SettingsError(`SIMULATION must be true or false, not "${value}"`);
 }
 
 function portFrom(value: string | undefined): number {
@@ -41,7 +58,9 @@ function portFrom(value: string | undefined): number {
 }
 
 function urlFrom(name: string, value: string | undefined): string {
-  if (value === undefined || value === "") throw new SettingsError(`${name} is required`);
+  if (value === undefined || value === "") {
+    throw new SettingsError(`${name} is required, unless SIMULATION is true`);
+  }
   const protocol = URL.parse(value)?.protocol;
   if (protocol !== "http:" && protocol !== "https:") {
     throw new SettingsError(`${name} must be an http or https URL, not "${value}"`);

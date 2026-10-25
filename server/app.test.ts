@@ -1,8 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { createApp } from "./app.ts";
+import { createApp, createSimulationApp } from "./app.ts";
 import {
   createSignedInApp,
+  createSimulationTestApp,
   createTestApp,
   PEER_ADDRESS,
   SESSION_KEY,
@@ -106,5 +107,48 @@ describe("the address of the client", () => {
       "198.51.100.1",
       PEER_ADDRESS,
     ]);
+  });
+});
+
+describe("the server of the simulation", () => {
+  it.each(["/", "/links/id-1", "/s/abc123", "/api/session"])(
+    "answers the app's page at %s, since the app answers everything itself",
+    async (path) => {
+      const { browser } = createSimulationTestApp();
+
+      const answer = await browser.send(path);
+
+      expect(answer.status).toBe(200);
+      expect(answer.headers.get("content-security-policy")).toContain("default-src 'self'");
+      expect(await answer.text()).toContain("<title>The app</title>");
+    },
+  );
+
+  it("serves the files of the app", async () => {
+    const { browser } = createSimulationTestApp();
+
+    const answer = await browser.send("/assets/app-0123abcd.js");
+
+    expect(answer.headers.get("content-type")).toBe("text/javascript; charset=utf-8");
+    expect(await answer.text()).toContain("the app");
+  });
+
+  it("is only read", async () => {
+    const { browser } = createSimulationTestApp();
+
+    const answer = await browser.sendJson("POST", "/api/session", {});
+
+    expect(answer.status).toBe(405);
+    expect(answer.headers.get("allow")).toBe("GET, HEAD");
+  });
+
+  it("answers internal_error when it fails", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => undefined);
+    const app = createSimulationApp("/nonexistent");
+
+    const answer = await app(new Request("http://app.test/links"), PEER_ADDRESS);
+
+    expect(answer.status).toBe(500);
+    expect(await answer.json()).toMatchObject({ error: { code: "internal_error" } });
   });
 });

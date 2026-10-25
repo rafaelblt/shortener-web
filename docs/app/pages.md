@@ -1,6 +1,6 @@
 # Pages
 
-What each page shows and does, and the texts a person reads on it. How the code does it is in [the architecture of the pages](../architecture/pages.md), and how the pages look, in [Design](../design.md). The app runs on go-auth and the shortener, through its server, or, in development and in its tests, on the [simulation](simulation.md), which stands in for them.
+What each page shows and does, and the texts a person reads on it. How the code does it is in [the architecture of the pages](../architecture/pages.md), and how the pages look, in [Design](../design.md). The app runs on go-auth and the shortener, through its server, or, in development, in its tests and in its public demo, on the [simulation](simulation.md), which stands in for them.
 
 ## Overview
 

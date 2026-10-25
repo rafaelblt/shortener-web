@@ -1,6 +1,6 @@
 # Server
 
-`server/`: the server of the app, which the browser reaches, and which reaches go-auth and the shortener for it. It serves the files of the app, keeps the session of each browser in a cookie, and passes the app's requests on to the back ends. Node runs its TypeScript as it is, with no build and no package: it imports only Node's own modules, and the types of the [contracts](contracts.md).
+`server/`: the server of the app, which the browser reaches, and which reaches go-auth and the shortener for it. It serves the files of the app, keeps the session of each browser in a cookie, and passes the app's requests on to the back ends. It can also serve the [simulation](#the-simulation) alone, which needs no back end. Node runs its TypeScript as it is, with no build and no package: it imports only Node's own modules, and the types of the [contracts](contracts.md).
 
 It holds the tokens of go-auth, so that no script of the page can read them: an injected one could act for the user only while the page is open, and couldn't take the session elsewhere.
 
@@ -8,15 +8,16 @@ It holds the tokens of go-auth, so that no script of the page can read them: an 
 
 `settings.ts`: `settingsFromEnvironment(environment)` reads them, and throws a `SettingsError` that names what is wrong, which `main.ts` writes before it stops.
 
-| Variable                | Required | Value                                                                                                                                                                                                                    |
-| ----------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `GO_AUTH_URL`           | Yes      | Where go-auth answers, such as `http://go-auth.railway.internal:8080`                                                                                                                                                    |
-| `SHORTENER_URL`         | Yes      | Where the shortener's API answers                                                                                                                                                                                        |
-| `SESSION_KEY`           | Yes      | The key that encrypts the sessions: 32 random bytes in base64, such as `openssl rand -base64 32` writes. Changing it signs everyone out.                                                                                 |
-| `PORT`                  | No       | The port it listens on, 3000 by default                                                                                                                                                                                  |
-| `CLIENT_ADDRESS_HEADER` | No       | The header in which the proxy in front of the server gives the client's address, such as `X-Real-IP`. Without it, the client is the peer of the connection. See [The address of the client](#the-address-of-the-client). |
+| Variable                | Required                    | Value                                                                                                                                                                                                                    |
+| ----------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `SIMULATION`            | No                          | `true` to serve the [simulation](#the-simulation), which needs none of the variables below but `PORT`. `false` by default.                                                                                               |
+| `GO_AUTH_URL`           | Yes, but for the simulation | Where go-auth answers, such as `http://go-auth.railway.internal:8080`                                                                                                                                                    |
+| `SHORTENER_URL`         | Yes, but for the simulation | Where the shortener's API answers                                                                                                                                                                                        |
+| `SESSION_KEY`           | Yes, but for the simulation | The key that encrypts the sessions: 32 random bytes in base64, such as `openssl rand -base64 32` writes. Changing it signs everyone out.                                                                                 |
+| `PORT`                  | No                          | The port it listens on, 3000 by default                                                                                                                                                                                  |
+| `CLIENT_ADDRESS_HEADER` | No                          | The header in which the proxy in front of the server gives the client's address, such as `X-Real-IP`. Without it, the client is the peer of the connection. See [The address of the client](#the-address-of-the-client). |
 
-`npm run start` runs it, and `npm run server` too, with the variables of a `.env` file, which `.env.example` lists. It serves the build of the app from `dist/`, which `npm run build` writes.
+`npm run start` runs it, and `npm run server` too, with the variables of a `.env` file, which `.env.example` lists. It serves the build of its mode: the app's from `dist/app/`, which `npm run build` writes, or the simulation's from `dist/simulation/`, which `npm run build:simulation` writes. Vite writes each mode to its own directory, so that building one never replaces the other.
 
 ## The API
 
@@ -91,15 +92,23 @@ A `GET` of `/s/` and a slug asks the shortener to redirect it, at `/api/v1/slugs
 
 A request that isn't a `GET` or a `HEAD`, out of `/api/`, gets `405`.
 
+## The simulation
+
+With `SIMULATION=true`, `createSimulationApp(staticDirectory)` answers instead of `createApp()`: it serves the build of the [simulation](../app/simulation.md), as [The files of the app](#the-files-of-the-app) says, with the same headers, and nothing else. The simulation asks the server nothing, so there is no API and no session, nothing is kept on the server, and a short link, like any other path without an extension, gets the page of the app, which shows it as the simulation does. A request that isn't a `GET` or a `HEAD` gets `405`.
+
+This is how the public demo is deployed: the app, with no back end.
+
 ## The address of the client
 
 The back ends count their rate limits by the client's address, which the server gives them as `X-Forwarded-For`, so they have to trust the server's address for it. The address is the one in `CLIENT_ADDRESS_HEADER`, when it is set and the request has the header, or else the peer of the connection. Set it only to a header that the proxy in front of the server always sets, replacing the one a client sent, or a client could choose its address.
 
 ## The image
 
-`Dockerfile` builds the image that is deployed. Its first stage installs the dependencies and builds the app; the image keeps only Node, `server/`, the build in `dist/`, and `package.json`, which says that the modules are ES modules. It runs `node server/main.ts` as the user `node`, and listens on `PORT`. `.dockerignore` keeps out what the build doesn't need, and a `.env`, which may hold a session key.
+`Dockerfile` builds the image that is deployed. Its first stage installs the dependencies and builds both modes; the image keeps only Node, `server/`, the builds in `dist/`, and `package.json`, which says that the modules are ES modules. It runs `node server/main.ts` as the user `node`, and listens on `PORT`. `.dockerignore` keeps out what the build doesn't need, and a `.env`, which may hold a session key.
 
-The browser reaches only this server, so go-auth and the shortener need no public address. Deploying it takes:
+Deploying the simulation takes only `SIMULATION=true`, and `PORT` when the host chooses the port.
+
+On the back ends, the browser reaches only this server, so go-auth and the shortener need no public address. Deploying it takes:
 
 - The [settings](#settings), with a `SESSION_KEY` of its own.
 - A shortener that takes go-auth's tokens: `JWT_ALGORITHMS=EdDSA`, and `JWT_JWKS_URL` at go-auth's `/.well-known/jwks.json`, without `JWT_ISSUER` or `JWT_AUDIENCE`, since go-auth's tokens have no `iss` or `aud`.
@@ -108,24 +117,24 @@ The browser reaches only this server, so go-auth and the shortener need no publi
 
 ## Modules
 
-| Module                                                                 | Exports                                                                                                                                                                                                                                    |
-| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `main.ts`                                                              | Nothing: starts the server, with the settings of the environment. The tests leave it out.                                                                                                                                                  |
-| `node-server.ts`                                                       | `serve(handler)`: a server of `node:http` for a `Handler`, which takes a `Request` of the Fetch API and the peer's address, and answers a `Response`                                                                                       |
-| `app.ts`                                                               | `createApp(dependencies)`: the `Handler` of the server, which routes each request, and answers `500` or `502` when one fails. `AppDependencies` are the settings, where the build is, `fetch`, the clock and the IDs, which the tests set. |
-| `messages.ts`                                                          | `Incoming`, a request with its URL and the client's address, `bodyOf(request)`, and the answers the routes share, such as `passedThrough(answer)`                                                                                          |
-| `back-end.ts`                                                          | `callBackEnd(fetch, url, request)`, which gives the client's address, and `BackEndError`, thrown when a back end can't be reached or answers what the server can't use                                                                     |
-| `go-auth.ts`                                                           | `GoAuth`: `send(path, body, clientAddress)`, and `refresh`, `me` and `logout`, with the types of [go-auth's contract](contracts.md)                                                                                                        |
-| `session-routes.ts`                                                    | `SessionRoutes`: the routes of `/api/session` and `/api/users`                                                                                                                                                                             |
-| `shortener-routes.ts`                                                  | `ShortenerRoutes`                                                                                                                                                                                                                          |
-| `static-files.ts`                                                      | `StaticFiles`                                                                                                                                                                                                                              |
-| `sessions.ts`, `session.ts`, `session-cookie.ts`, `session-cookies.ts` | [Sessions](#sessions) and [Refreshing](#refreshing)                                                                                                                                                                                        |
-| `settings.ts`                                                          | [Settings](#settings)                                                                                                                                                                                                                      |
+| Module                                                                 | Exports                                                                                                                                                                                                                                                                                                                                                            |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `main.ts`                                                              | Nothing: starts the server, with the settings of the environment, on the back ends or the simulation. The tests leave it out.                                                                                                                                                                                                                                      |
+| `node-server.ts`                                                       | `serve(handler)`: a server of `node:http` for a `Handler`, which takes a `Request` of the Fetch API and the peer's address, and answers a `Response`                                                                                                                                                                                                               |
+| `app.ts`                                                               | `createApp(dependencies)`: the `Handler` of the server on the back ends, which routes each request, and answers `500` or `502` when one fails. `AppDependencies` are the settings of the back ends, where the build is, `fetch`, the clock and the IDs, which the tests set. `createSimulationApp(staticDirectory)`: the one of [the simulation](#the-simulation). |
+| `messages.ts`                                                          | `Incoming`, a request with its URL and the client's address, `bodyOf(request)`, and the answers the routes share, such as `passedThrough(answer)`                                                                                                                                                                                                                  |
+| `back-end.ts`                                                          | `callBackEnd(fetch, url, request)`, which gives the client's address, and `BackEndError`, thrown when a back end can't be reached or answers what the server can't use                                                                                                                                                                                             |
+| `go-auth.ts`                                                           | `GoAuth`: `send(path, body, clientAddress)`, and `refresh`, `me` and `logout`, with the types of [go-auth's contract](contracts.md)                                                                                                                                                                                                                                |
+| `session-routes.ts`                                                    | `SessionRoutes`: the routes of `/api/session` and `/api/users`                                                                                                                                                                                                                                                                                                     |
+| `shortener-routes.ts`                                                  | `ShortenerRoutes`                                                                                                                                                                                                                                                                                                                                                  |
+| `static-files.ts`                                                      | `StaticFiles`                                                                                                                                                                                                                                                                                                                                                      |
+| `sessions.ts`, `session.ts`, `session-cookie.ts`, `session-cookies.ts` | [Sessions](#sessions) and [Refreshing](#refreshing)                                                                                                                                                                                                                                                                                                                |
+| `settings.ts`                                                          | [Settings](#settings)                                                                                                                                                                                                                                                                                                                                              |
 
 ## Tests
 
 The tests of each module are beside it, and run in Node. Most send requests to the server through its `Handler`, on fake back ends, with the helpers of `tests/support/server/`:
 
 - `FakeBackEnds` is go-auth and the shortener in memory, on a clock the test moves. Its go-auth rotates the refresh tokens, and ends the session of one used twice, as the real one does; its shortener answers what it received, unless the test gives it another answer.
-- `createTestApp()` and `createSignedInApp()` give the server on them, and a `TestBrowser`, which keeps the cookie as a browser does. A test can set its cookie, to send one that was replaced.
+- `createTestApp()` and `createSignedInApp()` give the server on them, and a `TestBrowser`, which keeps the cookie as a browser does. A test can set its cookie, to send one that was replaced. `createSimulationTestApp()` gives the server of the simulation.
 - `static/` is a build of the app with one page, one asset and an icon.

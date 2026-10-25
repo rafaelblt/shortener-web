@@ -19,30 +19,54 @@ describe("the settings", () => {
 
     expect(settings).toEqual({
       port: 8080,
-      goAuthUrl: "http://go-auth.internal:8080",
-      shortenerUrl: "http://shortener.internal:8000",
-      sessionKey: Buffer.alloc(32, 3),
-      clientAddressHeader: "x-real-ip",
+      backEnds: {
+        goAuthUrl: "http://go-auth.internal:8080",
+        shortenerUrl: "http://shortener.internal:8000",
+        sessionKey: Buffer.alloc(32, 3),
+        clientAddressHeader: "x-real-ip",
+      },
     });
+  });
+
+  it("need no back end for the simulation", () => {
+    const settings = settingsFromEnvironment({ SIMULATION: "true", PORT: "8080" });
+
+    expect(settings).toEqual({ port: 8080, backEnds: null });
+  });
+
+  it.each(["false", ""])("need the back ends when SIMULATION is %j", (simulation) => {
+    expect(settingsFromEnvironment({ ...REQUIRED, SIMULATION: simulation }).backEnds).toEqual(
+      expect.objectContaining({ goAuthUrl: REQUIRED.GO_AUTH_URL }),
+    );
+    expect(() => settingsFromEnvironment({ SIMULATION: simulation })).toThrow(/GO_AUTH_URL is/);
   });
 
   it("listen on port 3000, and take the client's address from the peer, by default", () => {
     const settings = settingsFromEnvironment({ ...REQUIRED, PORT: "", CLIENT_ADDRESS_HEADER: "" });
 
     expect(settings.port).toBe(3000);
-    expect(settings.clientAddressHeader).toBeUndefined();
+    expect(settings.backEnds?.clientAddressHeader).toBeUndefined();
   });
 
   it("drop the slashes at the end of a URL", () => {
     const settings = settingsFromEnvironment({ ...REQUIRED, GO_AUTH_URL: "https://go-auth.test/" });
 
-    expect(settings.goAuthUrl).toBe("https://go-auth.test");
+    expect(settings.backEnds?.goAuthUrl).toBe("https://go-auth.test");
   });
 
   it.each([
     { case: "a port that isn't a number", change: { PORT: "http" }, error: /PORT must be/ },
     { case: "a port out of range", change: { PORT: "70000" }, error: /PORT must be/ },
-    { case: "no URL of go-auth", change: { GO_AUTH_URL: undefined }, error: /GO_AUTH_URL is/ },
+    {
+      case: "a SIMULATION that isn't true or false",
+      change: { SIMULATION: "yes" },
+      error: /SIMULATION must be true or false, not "yes"/,
+    },
+    {
+      case: "no URL of go-auth",
+      change: { GO_AUTH_URL: undefined },
+      error: /GO_AUTH_URL is required, unless SIMULATION is true/,
+    },
     {
       case: "a URL of the shortener that isn't one",
       change: { SHORTENER_URL: "shortener" },

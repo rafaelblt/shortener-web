@@ -4,7 +4,7 @@
 
 ## The start
 
-`main.tsx` imports the fonts and the [styles](ui.md#styles), and builds the services by the mode of Vite: in `simulation`, which `npm run dev` and `npm run build:simulation` use, the simulated ones, with the demo account and a latency of 250 to 700ms, and otherwise the HTTP ones. It creates the router with them, and renders it in `#root`, under the `SimulationBanner` in the simulation. Vite writes the mode into the build, which so leaves out the code of the other one. It is the only module that runs only in the browser, and the only one the tests leave out.
+`main.tsx` imports the fonts and the [styles](ui.md#styles), and builds the services by the mode of Vite: in `simulation`, which `npm run dev` and `npm run build:simulation` use, the simulated ones, with the demo account and a latency of 250 to 700ms, and otherwise the HTTP ones. It creates the router with them, and renders it in `#root`, under the `SimulationBanner` in the simulation. Vite writes the mode into the build, which so leaves out the code of the other one, and writes each build to a directory of its own, `dist/app/` and `dist/simulation/` (see `vite.config.ts`), where the [server](server.md#settings) finds it. It is the only module that runs only in the browser, and the only one the tests leave out.
 
 ## The router
 

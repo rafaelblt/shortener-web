@@ -1,6 +1,6 @@
 # Simulation
 
-A simulation can stand in for go-auth and the shortener, so that every page and flow can be seen and tried without them. The app runs on it in development and in its tests, and on the back ends once deployed. How the code does it is in [the architecture of the simulation](../architecture/simulation.md).
+A simulation can stand in for go-auth and the shortener, so that every page and flow can be seen and tried without them. The app runs on it in development, in its tests and in its public demo, which deploys no back end, and on the back ends otherwise. How the code does it is in [the architecture of the simulation](../architecture/simulation.md).
 
 ## What it keeps
 
