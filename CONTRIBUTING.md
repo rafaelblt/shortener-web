@@ -133,7 +133,7 @@ The documents are a reflection of the project: what they say is what the code do
 - [docs/app/](docs/app/pages.md): what the app does, seen by whoever uses it or decides what it does: its [pages](docs/app/pages.md), with their texts and flows, and the [simulation](docs/app/simulation.md). They name no module, component or function.
 - [docs/design.md](docs/design.md): the visual language: its principles, its tokens, its components and its patterns.
 - [docs/architecture/](docs/architecture/README.md): how the code does it: the layers, and one document per layer, with what each module exports.
-- [docs/issues/](docs/issues/README.md): the known problems and the open questions.
+- [Issues](https://github.com/rafaelblt/shortener-web/issues), on GitHub: the known problems and the open questions.
 
 The contracts of the back ends, their endpoints and the shapes of their requests and answers, are their OpenAPI schemas, copied as they are into `contracts/` (see [Contracts](docs/architecture/contracts.md)). The documents of the back ends, which explain what they do and why, aren't copied or retold here: a document of this repository says what this app does, including what it does because of how a back end behaves.
 
@@ -162,7 +162,37 @@ Every task that changes code (a feature, a fix, a refactor, a removal) also cove
 
 ## Issues
 
-Until the repository is on GitHub, issues live in [docs/issues/](docs/issues/README.md), one file per issue. When to open one, the format, the states and the workflow are described there.
+The issues are on [GitHub](https://github.com/rafaelblt/shortener-web/issues). The first twelve began as files of `docs/issues/`, and each says so, with a link to its file.
+
+### When to open one
+
+An issue records a problem or a question to be handled apart from the task where it came up. Open one for:
+
+- A problem found during a task, but outside its scope, that has to be analyzed and fixed separately.
+- A problem complex enough to need a deeper investigation before it is fixed.
+- A problem, a question or a piece of work that can be left for later, because it has little impact for now.
+
+### What it says
+
+- The title says what happens, as a sentence, such as _The list of links asks for each page one after the other_.
+- The description says what was observed: what happens, how to reproduce it and where in the code. It states the expected behavior only when something already defines it, such as the documentation. Otherwise, it says that it is still to be decided.
+- What is learned or decided later is a new comment, headed by its date and what it says, such as `## 2026-10-23: An active link redirects at once`. The description isn't rewritten: a correction is a comment that says what was wrong.
+
+### Labels
+
+An issue has one type, `bug`, `enhancement`, `refactor` or `question`, and the labels of what it involves:
+
+- `area:` and a layer, `domain`, `services`, `simulation`, `http`, `ui`, `pages` or `app`, or `area: server`;
+- `area: tests`, `area: tooling`, for the checks, the build and the scripts, or `area: deploy`, for the image and what a deploy takes;
+- `documentation`, for the documents, and `accessibility`, for a barrier for people with disabilities.
+
+A new label is added here before it is used.
+
+### Closing
+
+- A commit that fixes an issue closes it with `Closes #12.` in its body, and a comment on the issue says what changed, as the closing entries of the first issues do.
+- An issue that won't be fixed, such as one that turned out not to be a problem, is closed as _not planned_, or as a _duplicate_ of another, with a comment that says why.
+- An issue that comes back is reopened, with a comment that says why.
 
 ## Commits
 
@@ -201,7 +231,6 @@ Until the repository is on GitHub, issues live in [docs/issues/](docs/issues/REA
 | `app`                     | Routes, layouts and the assembly             |
 | `server`                  | The server of the app                        |
 | `support`, `flows`, `e2e` | Test infrastructure and suites (with `test`) |
-| `issues`                  | Issue files (with `docs`)                    |
 
 Examples from the history:
 

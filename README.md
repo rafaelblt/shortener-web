@@ -78,4 +78,4 @@ runs the formatter, the linter, the type checker, the check of the layers, and e
 - [docs/app/](docs/app/pages.md): what the app does, seen by whoever uses it: its [pages](docs/app/pages.md) and its [simulation](docs/app/simulation.md).
 - [docs/design.md](docs/design.md): the visual language, its tokens and its components.
 - [docs/architecture/](docs/architecture/README.md): how the code does it: the layers, and one document per layer.
-- [docs/issues/](docs/issues/README.md): the known problems and the open questions.
+- [Issues](https://github.com/rafaelblt/shortener-web/issues): the known problems and the open questions.

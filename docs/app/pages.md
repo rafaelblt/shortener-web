@@ -116,7 +116,7 @@ A link that doesn't exist, or that belongs to someone else, gets _This link does
 
 ## A short link
 
-Short links are addresses of the app itself, `/s/` and the slug, until they get a domain of their own (see [issue 0004](../issues/0004-what-a-visitor-sees-on-the-domain-of-short-links-is-undecided.md)). Following an active one counts a visit, and leads straight to its target URL. For a link that leads nowhere, the page says why, without the header of the app:
+Short links are addresses of the app itself, `/s/` and the slug, until they get a domain of their own (see [#4](https://github.com/rafaelblt/shortener-web/issues/4)). Following an active one counts a visit, and leads straight to its target URL. For a link that leads nowhere, the page says why, without the header of the app:
 
 - **A deactivated link**: _This link is turned off._, and that its owner deactivated it.
 - **An unknown slug**: _There's no link here._, and that slugs tell uppercase from lowercase.

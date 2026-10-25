@@ -4,15 +4,15 @@ What is specific to agents working in this repository. The project's rules aren'
 
 ## Map
 
-| Where                                             | What                                                                                      |
-| ------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| [README.md](README.md)                            | What the app is, where it stands, its architecture in short, and how to start             |
-| [CONTRIBUTING.md](CONTRIBUTING.md)                | How to work: the principles, the checks, the tests, the documents, the issues and commits |
-| [docs/app/](docs/app/pages.md)                    | What the app does, seen by whoever uses it: its pages and the simulation                  |
-| [docs/design.md](docs/design.md)                  | The visual language, its tokens and its components                                        |
-| [docs/architecture/](docs/architecture/README.md) | How the code does it: the layers, and one document per layer                              |
-| [docs/issues/](docs/issues/README.md)             | The known problems and the open questions                                                 |
-| `package.json`                                    | The dependencies and the scripts                                                          |
+| Where                                                       | What                                                                                      |
+| ----------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| [README.md](README.md)                                      | What the app is, where it stands, its architecture in short, and how to start             |
+| [CONTRIBUTING.md](CONTRIBUTING.md)                          | How to work: the principles, the checks, the tests, the documents, the issues and commits |
+| [docs/app/](docs/app/pages.md)                              | What the app does, seen by whoever uses it: its pages and the simulation                  |
+| [docs/design.md](docs/design.md)                            | The visual language, its tokens and its components                                        |
+| [docs/architecture/](docs/architecture/README.md)           | How the code does it: the layers, and one document per layer                              |
+| [Issues](https://github.com/rafaelblt/shortener-web/issues) | The known problems and the open questions, on GitHub                                      |
+| `package.json`                                              | The dependencies and the scripts                                                          |
 
 ## Before a task
 
@@ -33,7 +33,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md), all of it, and [docs/architecture/READM
 | touches `server/`                                            | [docs/architecture/server.md](docs/architecture/server.md)                              |
 | touches `contracts/`, or what a back end receives or answers | [docs/architecture/contracts.md](docs/architecture/contracts.md)                        |
 | touches `tests/`                                             | [Tests](CONTRIBUTING.md#tests) in CONTRIBUTING.md                                       |
-| opens, closes or adds to an issue                            | [docs/issues/README.md](docs/issues/README.md)                                          |
+| opens, closes or adds to an issue, with `gh issue`           | [Issues](CONTRIBUTING.md#issues) in CONTRIBUTING.md                                     |
 | makes a commit                                               | [Commits](CONTRIBUTING.md#commits) in CONTRIBUTING.md                                   |
 
 ## During a task

@@ -11,11 +11,10 @@ import { describe, expect, it } from "vitest";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 
-// The content of an issue is append-only, so its links stay as they were written, even after what
-// they lead to moves. See docs/issues/README.md#format
-const DOCUMENTS = [...globSync("*.md", { cwd: ROOT }), ...globSync("docs/**/*.md", { cwd: ROOT })]
-  .filter((path) => !/^docs\/issues\/\d+-/.test(path))
-  .sort();
+const DOCUMENTS = [
+  ...globSync("*.md", { cwd: ROOT }),
+  ...globSync("docs/**/*.md", { cwd: ROOT }),
+].sort();
 
 const CODE = [
   ...globSync("src/**/*.{ts,tsx,css}", { cwd: ROOT }),
