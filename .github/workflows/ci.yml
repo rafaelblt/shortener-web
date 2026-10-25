@@ -50,5 +50,5 @@ jobs:
 
       - name: The demo answers
         run: |
-          curl --fail --silent --show-error --retry 10 --retry-connrefused --retry-delay 1 \
+          curl --fail --silent --show-error --retry 10 --retry-all-errors --retry-delay 1 \
             http://localhost:3000/s/abc123 | grep --quiet '<div id="root">'
