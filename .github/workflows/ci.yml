@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24 # the Dockerfile's node:24
+          cache: npm
+
+      - run: npm ci
+
+      - run: npx playwright install --with-deps chromium
+
+      # The same checks as locally. See CONTRIBUTING.md#checks
+      - run: npm run check
+
+      # The traces of the browser tests that failed.
+      - if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-results
+          path: test-results/
+          if-no-files-found: ignore
+
+  image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - run: docker build --tag shortener-web .
+
+      # The image as the demo deploys it: the simulation, with no back end.
+      - run: docker run --detach --publish 3000:3000 --env SIMULATION=true shortener-web
+
+      - name: The demo answers
+        run: |
+          curl --fail --silent --show-error --retry 10 --retry-connrefused --retry-delay 1 \
+            http://localhost:3000/s/abc123 | grep --quiet '<div id="root">'

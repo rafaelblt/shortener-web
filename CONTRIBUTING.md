@@ -20,7 +20,7 @@ The project is developed mostly by agents. Its maintainer decides what the app d
 
 ## Checks
 
-`npm run check` runs every check. There is no CI until the repository has a remote, so it runs before each commit. A change is finished when it passes.
+`npm run check` runs every check, before each commit. The [CI](.github/workflows/ci.yml) runs it again on each push to `main` and each pull request, and also builds the image and checks that it serves the simulation, as the demo is deployed. A change is finished when both pass.
 
 | Script                    | Checks                                                                                                                                          |
 | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
